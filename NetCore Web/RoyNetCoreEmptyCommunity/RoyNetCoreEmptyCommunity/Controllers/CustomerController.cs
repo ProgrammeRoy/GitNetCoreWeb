@@ -4,18 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+//Paso 3: Add Clase Controlador
+//Un controlador realiza operaciones hacia una base u origen de datos que va a solicitar datos y va a recibirlos del conjunto de datos
+
 namespace RoyNetCoreEmptyCommunity.Controllers
 {
+  //Establece un ruteo general(a nivel de controlador) para no tener que asignar un ruteo a cada método
   [Route("api/customers")]
+  //Paso 3.1: Heredar de Controller
   public class CustomerController : Controller
   {
-    //[HttpGet("PRUEBA")] Es una manera de enrutar por el método para recibir un getCustomers
-    //[HttpGet("1")] Lo uso cuando no hay Rout encima de la clase
+    //Paso 3.3: Establecer Ruteo por Atributo [HttpGet()]
+    //[HttpGet("PRUEBA")] Es una manera de enrutar por el método para recibir un getCustomers() general
+    //[HttpGet()] Es una manera de enrutar cuando se quiere seleccionar alguna opción específica y se añade un [HttpGet("{valorBuscado}")] en la cabecera del método que busca
     [HttpGet()]
 
-    //Cambio método JssonResult por IActionResult ya que este si contiene a NotFound()
+    //Paso 3.2: Create método que retorne lista de clientes 
+    //Cambio método JssonResult por IActionResult ya que este es general y contiene a NotFound()
     public IActionResult GetCustomers()
     {
+      //Retorna una lista de Clientes, para esto se agregó el método Repository
       return new JsonResult(Repository.Instance.Customers);
 
       //Envía datos personalizados
@@ -29,9 +37,9 @@ namespace RoyNetCoreEmptyCommunity.Controllers
       //  );
     }
 
-    //Cambio método JssonResult por IActionResult ya que este si contiene a NotFound()
-
+    //Establece Ruteo por Atributo específico [HttpGet("{  }")]
     [HttpGet("{id}")]
+    //Cambio método JssonResult por IActionResult ya que este es general y contiene a NotFound()
     public IActionResult GetCustomer(int id)
     {
       var result = Repository.Instance.Customers.FirstOrDefault(c => c.Id == id);
@@ -41,10 +49,6 @@ namespace RoyNetCoreEmptyCommunity.Controllers
       }
       return new JsonResult(result);
     }
-
-
-
-
 
     //Ejemplo para agregar una segunda direccion
     //[HttpGet("2")]
